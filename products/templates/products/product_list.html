@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Minha Loja de Roupas</title>
+</head>
+<body>
+    <h1>Catálogo de Roupas Masculinas</h1>
+    
+    <div style="display: flex; gap: 20px;">
+        {% for product in products %}
+        <div style="border: 1px solid #ccc; padding: 15px;">
+            <h3>{{ product.name }}</h3>
+            <p>{{ product.description }}</p>
+            <p><strong>Tamanho:</strong> {{ product.get_size_display }}</p>
+            <p><strong>Preço:</strong> R$ {{ product.price }}</p>
+        </div>
+        {% empty %}
+        <p>Nenhuma roupa cadastrada ainda!</p>
+        {% endfor %}
+    </div>
+</body>
+</html>
