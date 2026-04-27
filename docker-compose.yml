@@ -1,0 +1,14 @@
+services:
+  web:
+    build: .
+    # Comando para rodar o servidor de desenvolvimento do Django
+    command: python manage.py runserver 0.0.0.0:8000
+    # Sincroniza a pasta do seu computador com a pasta do container em tempo real
+    volumes:
+      - .:/app
+    # Mapeia a porta 8000 do container para a porta 8000 do seu computador
+    ports:
+      - "8000:8000"
+    # Variáveis de ambiente
+    environment:
+      - DEBUG=1
