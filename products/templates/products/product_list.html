@@ -11,61 +11,87 @@
 </head>
 <body class="bg-light">
 
-    <!-- Barra de Navegação Atualizada -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
-    <div class="container d-flex justify-content-between">
-        <a class="navbar-brand fw-bold" href="{% url 'product_list' %}">MENS E-COMMERCE</a>
-        
-        <!-- Ícone do Carrinho com contador -->
-        <a href="{% url 'cart_detail' %}" class="btn btn-outline-light position-relative">
-            <svg xmlns="http://w3.org" width="18" height="18" fill="currentColor" class="bi bi-cart3" viewBox="0 0 16 16">
-                <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.203 8.397-.422L13.202 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-            </svg>
-            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                {{ cart_total_items }}
-            </span>
-        </a>
+    <!-- Barra de Navegação -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+        <div class="container d-flex justify-content-between">
+            <a class="navbar-brand fw-bold" href="{% url 'product_list' %}">MENS E-COMMERCE</a>
+            
+            <!-- Ícone do Carrinho com contador -->
+            <a href="{% url 'cart_detail' %}" class="btn btn-outline-light position-relative">
+                <svg xmlns="http://w3.org" width="18" height="18" fill="currentColor" class="bi bi-cart3" viewBox="0 0 16 16">
+                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.203 8.397-.422L13.202 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                </svg>
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    {{ cart_total_items }}
+                </span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Bloco de Mensagens Flutuantes -->
+    <div class="container mt-3">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
     </div>
-</nav>
 
     <div class="container">
         <h1 class="mb-4 text-center text-uppercase fw-bold">Moda Masculina</h1>
         
+        <!-- Barra de Categorias -->
+        <div class="d-flex justify-content-center gap-2 mb-5">
+            <a href="{% url 'product_list' %}" class="btn {% if not current_category %}btn-dark{% else %}btn-outline-dark{% endif %} btn-sm px-4">
+                Todas
+            </a>
+            
+            {% for category in categories %}
+                <a href="{% url 'product_list' %}?categoria={{ category }}" class="btn {% if current_category == category %}btn-dark{% else %}btn-outline-dark{% endif %} btn-sm px-4">
+                    {{ category }}
+                </a>
+            {% endfor %}
+        </div>
+        
+        <!-- Vitrine de Produtos -->
         <div class="row row-cols-1 row-cols-md-3 g-4">
             {% for product in products %}
-            <div class="col">
-                <div class="card h-100 shadow-sm border-0">
-                    
-                    <!-- Espaço reservado para a foto da roupa -->
-                    {% if product.image %}
-                        <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
-                    {% else %}
-                        <div class="bg-secondary text-white text-center py-5">
-                            Sem Imagem
-                        </div>
-                    {% endif %}
-
-                    <div class="card-body d-flex flex-column">
-                        <span class="badge bg-secondary mb-2 align-self-start">{{ product.category }}</span>
-                        <h5 class="card-title fw-bold">{{ product.name }}</h5>
-                        <p class="card-text text-muted small flex-grow-1">{{ product.description }}</p>
+                <div class="col">
+                    <div class="card h-100 shadow-sm border-0">
                         
-                        <div class="d-flex justify-content-between align-items-center mt-3">
-                            <div>
-                                <span class="text-muted small">Tam: <strong>{{ product.get_size_display }}</strong></span>
-                                <div class="fs-5 fw-bold text-success">R$ {{ product.price }}</div>
+                        <!-- Espaço reservado para a foto da roupa -->
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                        {% else %}
+                            <div class="bg-secondary text-white text-center py-5">
+                                Sem Imagem
                             </div>
-                            <a href="{% url 'add_to_cart' product.id %}" class="btn btn-dark btn-sm px-3">Comprar</a>
+                        {% endif %}
+
+                        <div class="card-body d-flex flex-column">
+                            <span class="badge bg-secondary mb-2 align-self-start">{{ product.category }}</span>
+                            <h5 class="card-title fw-bold">{{ product.name }}</h5>
+                            <p class="card-text text-muted small flex-grow-1">{{ product.description }}</p>
+                            
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <div>
+                                    <span class="text-muted small">Tam: <strong>{{ product.get_size_display }}</strong></span>
+                                    <div class="fs-5 fw-bold text-success">R$ {{ product.price }}</div>
+                                </div>
+                                <a href="{% url 'add_to_cart' product.id %}" class="btn btn-dark btn-sm px-3">Comprar</a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
             {% empty %}
-            <div class="col-12 text-center mt-5">
-                <div class="alert alert-warning" role="alert">
-                    Ainda não temos nenhuma peça de roupa cadastrada!
+                <div class="col-12 text-center mt-5">
+                    <div class="alert alert-warning" role="alert">
+                        Ainda não temos nenhuma peça de roupa cadastrada!
+                    </div>
                 </div>
-            </div>
             {% endfor %}
         </div>
     </div>
