@@ -40,3 +40,10 @@ def cart_detail(request):
         total_price += float(item['price']) * item['quantity']
         
     return render(request, 'products/cart_detail.html', {'cart': cart, 'total_price': total_price})
+
+def clear_cart(request):
+    # Verifica se existe um carrinho na sessão e o deleta
+    if 'cart' in request.session:
+        del request.session['cart']
+        
+    return redirect('cart_detail')
