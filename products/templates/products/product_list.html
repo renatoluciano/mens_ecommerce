@@ -45,7 +45,7 @@
                                 <span class="text-muted small">Tam: <strong>{{ product.get_size_display }}</strong></span>
                                 <div class="fs-5 fw-bold text-success">R$ {{ product.price }}</div>
                             </div>
-                            <button class="btn btn-dark btn-sm px-3">Comprar</button>
+                            <a href="{% url 'add_to_cart' product.id %}" class="btn btn-dark btn-sm px-3">Comprar</a>
                         </div>
                     </div>
                 </div>

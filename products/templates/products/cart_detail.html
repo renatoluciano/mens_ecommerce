@@ -1,0 +1,76 @@
+{% load django_bootstrap5 %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Carrinho | Mens E-commerce</title>
+    {% bootstrap_css %}
+</head>
+<body class="bg-light">
+
+    <!-- Barra de Navegação -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="{% url 'product_list' %}">MENS E-COMMERCE</a>
+            <a href="{% url 'product_list' %}" class="btn btn-outline-light btn-sm">Continuar Comprando</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 class="mb-4 text-uppercase fw-bold">Seu Carrinho</h1>
+        
+        <div class="row">
+            <div class="col-md-8">
+                {% if cart %}
+                <div class="card shadow-sm border-0 mb-3">
+                    <div class="card-body">
+                        <table class="table align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Produto</th>
+                                    <th>Quantidade</th>
+                                    <th>Preço Unitário</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in cart.values %}
+                                <tr>
+                                    <td><span class="fw-bold">{{ item.name }}</span></td>
+                                    <td>{{ item.quantity }}</td>
+                                    <td>R$ {{ item.price }}</td>
+                                    <td class="text-success fw-bold">R$ {{ item.price }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                {% else %}
+                <div class="alert alert-warning" role="alert">
+                    Seu carrinho está vazio!
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Resumo do Pedido -->
+            <div class="col-md-4">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold mb-3">Resumo</h5>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Subtotal:</span>
+                            <span class="fw-bold">R$ {{ total_price|floatformat:2 }}</span>
+                        </div>
+                        <hr>
+                        <button class="btn btn-dark w-100 fw-bold py-2">Finalizar Compra</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% bootstrap_javascript %}
+</body>
+</html>
