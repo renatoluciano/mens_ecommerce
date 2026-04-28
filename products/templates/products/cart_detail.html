@@ -26,25 +26,34 @@
                 <div class="card shadow-sm border-0 mb-3">
                     <div class="card-body">
                         <table class="table align-middle">
-                            <thead>
-                                <tr>
-                                    <th>Produto</th>
-                                    <th>Quantidade</th>
-                                    <th>Preço Unitário</th>
-                                    <th>Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for item in cart.values %}
-                                <tr>
-                                    <td><span class="fw-bold">{{ item.name }}</span></td>
-                                    <td>{{ item.quantity }}</td>
-                                    <td>R$ {{ item.price }}</td>
-                                    <td class="text-success fw-bold">R$ {{ item.price }}</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+    <thead>
+        <tr>
+            <th>Produto</th>
+            <th>Quantidade</th>
+            <th>Preço Unitário</th>
+            <th>Total</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for id, item in cart.items %}
+        <tr>
+            <td><span class="fw-bold">{{ item.name }}</span></td>
+            <td>{{ item.quantity }}</td>
+            <td>R$ {{ item.price }}</td>
+            <!-- 🌟 AGORA EXIBE O VALOR UNITÁRIO VEZES A QUANTIDADE -->
+            <td class="text-success fw-bold">R$ {{ item.subtotal|floatformat:2 }}</td>
+            <td>
+                <!-- 🌟 BOTÃO PARA REMOVER O ITEM -->
+                <a href="{% url 'remove_from_cart' id %}" class="btn btn-sm btn-outline-danger">
+                    Remover
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
                     </div>
                 </div>
                 {% else %}

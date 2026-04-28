@@ -35,15 +35,28 @@ def cart_detail(request):
     cart = request.session.get('cart', {})
     total_price = 0
     
-    # Calcula o valor total do carrinho
+    # Calcula o subtotal de cada item e o total geral
     for item in cart.values():
-        total_price += float(item['price']) * item['quantity']
+        item['subtotal'] = float(item['price']) * item['quantity']
+        total_price += item['subtotal']
         
     return render(request, 'products/cart_detail.html', {'cart': cart, 'total_price': total_price})
+
 
 def clear_cart(request):
     # Verifica se existe um carrinho na sessão e o deleta
     if 'cart' in request.session:
         del request.session['cart']
+        
+    return redirect('cart_detail')
+
+def remove_from_cart(request, product_id):
+    cart = request.session.get('cart', {})
+    product_id_str = str(product_id)
+    
+    # Se o produto estiver no carrinho, remove ele
+    if product_id_str in cart:
+        del cart[product_id_str]
+        request.session['cart'] = cart
         
     return redirect('cart_detail')
