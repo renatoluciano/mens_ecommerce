@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # local apps
     'core',
     'products',
+    'django_bootstrap5',
 ]
 
 MIDDLEWARE = [
