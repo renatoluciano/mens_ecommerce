@@ -23,63 +23,73 @@
         <div class="row">
             <div class="col-md-8">
                 {% if cart %}
-                <div class="card shadow-sm border-0 mb-3">
-                    <div class="card-body">
-                        <table class="table align-middle">
-    <thead>
-        <tr>
-            <th>Produto</th>
-            <th>Quantidade</th>
-            <th>Preço Unitário</th>
-            <th>Total</th>
-            <th>Ações</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for id, item in cart.items %}
-        <tr>
-            <td><span class="fw-bold">{{ item.name }}</span></td>
-            <td>{{ item.quantity }}</td>
-            <td>R$ {{ item.price }}</td>
-            <!-- 🌟 AGORA EXIBE O VALOR UNITÁRIO VEZES A QUANTIDADE -->
-            <td class="text-success fw-bold">R$ {{ item.subtotal|floatformat:2 }}</td>
-            <td>
-                <!-- 🌟 BOTÃO PARA REMOVER O ITEM -->
-                <a href="{% url 'remove_from_cart' id %}" class="btn btn-sm btn-outline-danger">
-                    Remover
-                </a>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-
+                    <div class="card shadow-sm border-0 mb-3">
+                        <div class="card-body">
+                            <table class="table align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>Produto</th>
+                                        <th>Quantidade</th>
+                                        <th>Preço Unitário</th>
+                                        <th>Total</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for id, item in cart.items %}
+                                        <tr>
+                                            <td><span class="fw-bold">{{ item.name }}</span></td>
+                                            <td>{{ item.quantity }}</td>
+                                            <td>R$ {{ item.price }}</td>
+                                            <td class="text-success fw-bold">R$ {{ item.subtotal|floatformat:2 }}</td>
+                                            <td>
+                                                <a href="{% url 'remove_from_cart' id %}" class="btn btn-sm btn-outline-danger">
+                                                    Remover
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
                 {% else %}
-                <div class="alert alert-warning" role="alert">
-                    Seu carrinho está vazio!
-                </div>
+                    <div class="alert alert-warning" role="alert">
+                        Seu carrinho está vazio!
+                    </div>
                 {% endif %}
             </div>
 
             <!-- Resumo do Pedido -->
-            <div class="col-md-4">
-                <div class="card shadow-sm border-0">
-                    <div class="card-body">
-                        <h5 class="card-title fw-bold mb-3">Resumo</h5>
-                        <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="text-uppercase fw-bold mb-0">Seu Carrinho</h1>
-    {% if cart %}
-        <a href="{% url 'clear_cart' %}" class="btn btn-outline-danger btn-sm">Esvaziar Carrinho</a>
-    {% endif %}
+            <!-- Resumo do Pedido -->
+<div class="col-md-4">
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <h5 class="card-title fw-bold mb-3">Resumo do Pedido</h5>
+            
+            <div class="d-flex justify-content-between mb-2">
+                <span class="text-muted">Subtotal:</span>
+                <span class="fw-bold">R$ {{ total_price|floatformat:2 }}</span>
+            </div>
+            
+            <div class="d-flex justify-content-between mb-2">
+                <span class="text-muted">Frete:</span>
+                <span class="text-success fw-bold">Grátis</span>
+            </div>
+            
+            <hr>
+            
+            <div class="d-flex justify-content-between mb-3">
+                <span class="fs-5 fw-bold">Total:</span>
+                <!-- 🌟 AQUI APARECE O SOMATÓRIO DE TUDO -->
+                <span class="fs-5 fw-bold text-success">R$ {{ total_price|floatformat:2 }}</span>
+            </div>
+            
+            <button class="btn btn-dark w-100 fw-bold py-2 text-uppercase">Finalizar Compra</button>
+        </div>
+    </div>
 </div>
 
-                        <hr>
-                        <button class="btn btn-dark w-100 fw-bold py-2">Finalizar Compra</button>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
